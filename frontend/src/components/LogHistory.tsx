@@ -1,19 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { getLogs } from '../services';
+import React from 'react';
 import { Log } from '../interfaces';
 
-const LogHistory: React.FC = () => {
-  const [logs, setLogs] = useState<Log[] | null>(null);
-
-  const loadLogs = async () => {
-    const response = await getLogs();
-    const data = await response.json();
-    setLogs(data);
-  };
-
-  useEffect(() => {
-    loadLogs();
-  }, []);
+const LogHistory: React.FC<{ logs: Log[] | null }> = ({ logs }) => {
 
   return (
     <div>
