@@ -1,8 +1,7 @@
 import Notification from '../models/notification';
 import UserService from './user.service';
 import LogService from './log.service';
-import Log from '../models/log';
-import User from '../models/user';
+import { NotificationSystem } from '../notifications';
 
 class NotificationService {
   public async sendNotification(category: string, message: string): Promise<void> {
@@ -16,7 +15,7 @@ class NotificationService {
 
     for (const user of users) {
         for (const channel of user.channels!) {
-          await LogService.createLog({
+          const log = await LogService.createLog({
             userId: user.id,
             category,
             channel,
@@ -24,6 +23,8 @@ class NotificationService {
             timestamp: new Date(),
             success: true
         });
+
+        NotificationSystem.sendMessage(log);
         }
     }
   }
